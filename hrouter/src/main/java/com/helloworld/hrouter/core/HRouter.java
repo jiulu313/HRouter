@@ -61,7 +61,7 @@ public class HRouter {
         activityMap.put(path,clazz);
     }
 
-    public Fax with(String path){
+    public Fax withRouter(String path){
         if (com.helloworld.hrouter.util.TextUtils.isEmpty(path)) {
             throw new IllegalArgumentException("path must not be null or empty");
         }else {
@@ -70,16 +70,16 @@ public class HRouter {
     }
 
     protected void go(Context context,Fax fax){
-        Context tmpContext = context == null ? mContext : context;
-        Intent intent = new Intent(tmpContext, activityMap.get(fax.getPath()));
+        Context curContext = context == null ? mContext : context;
+        Intent intent = new Intent(curContext, activityMap.get(fax.getPath()));
         intent.putExtras(fax.getBundle());
 
         if (context == null) { //说明tmpContext 是 application
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        tmpContext.startActivity(intent);
-        if (tmpContext instanceof Activity) {
-            ((Activity)tmpContext).overridePendingTransition(fax.getEnterAnim(),fax.getExitAnim());
+        curContext.startActivity(intent);
+        if (curContext instanceof Activity) {
+            ((Activity)curContext).overridePendingTransition(fax.getEnterAnim(),fax.getExitAnim());
         }
     }
 }

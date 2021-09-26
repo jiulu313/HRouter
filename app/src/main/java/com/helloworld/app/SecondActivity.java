@@ -2,12 +2,12 @@ package com.helloworld.app;
 
 import android.os.Bundle;
 
-import com.helloworld.hrouter.annotation.Route;
+import com.helloworld.hrouter.annotation.Router;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-@Route("/app/second")
+@Router("/app/second")
 public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -1,18 +1,14 @@
 package com.helloworld.hrouter.compiler;
 
 import com.google.auto.service.AutoService;
-import com.helloworld.hrouter.annotation.Route;
+import com.helloworld.hrouter.annotation.Router;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.squareup.javapoet.WildcardTypeName;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,7 +25,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
 
 @AutoService(Processor.class)
 public class RouterProcessor extends AbstractProcessor {
@@ -46,14 +41,14 @@ public class RouterProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> sets = new HashSet<>();
-        sets.add(Route.class.getCanonicalName());
+        sets.add(Router.class.getCanonicalName());
         return sets;
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         messager.printMessage(Diagnostic.Kind.NOTE,"sssssssssssssss --------------->>>>>>>>>>>>");
-        Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(Route.class);
+        Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(Router.class);
 
         //1. 获取到所有使用了Route注解的activity，并存入表中
         Map<String,String> map = new HashMap<>();
@@ -62,7 +57,7 @@ public class RouterProcessor extends AbstractProcessor {
             Name qualifiedName = typeElement.getQualifiedName();
             messager.printMessage(Diagnostic.Kind.NOTE,"qualifiedName=" + qualifiedName.toString());
 
-            Route annotation = typeElement.getAnnotation(Route.class);
+            Router annotation = typeElement.getAnnotation(Router.class);
             String value = annotation.value();
             messager.printMessage(Diagnostic.Kind.NOTE,"value=" + value);
             map.put(value,qualifiedName.toString() + ".class");

@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.helloworld.hrouter.annotation.Route;
+import com.helloworld.hrouter.annotation.Router;
 import com.helloworld.hrouter.core.HRouter;
 
-@Route("/app/main")
+@Router("/app/main")
 public class MainActivity extends AppCompatActivity {
     Button btnLogin;
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onLogin() {
         HRouter.getInstance()
-                .with("/app/login")
+                .withRouter("/app/login")
                 .withString("name","tom")
                 .withString("password","123456")
                 .go();

@@ -2,16 +2,15 @@ package com.helloworld.module.login;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.helloworld.hrouter.annotation.Route;
+import com.helloworld.hrouter.annotation.Router;
 import com.helloworld.hrouter.core.HRouter;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-@Route("/app/login")
+@Router("/app/login")
 public class LoginActivity extends AppCompatActivity {
     Button bthLogin;
     Button btnJump2User;
@@ -30,10 +29,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         bthLogin.setOnClickListener(view -> {
-            HRouter.getInstance().with("/app/main").go(LoginActivity.this);
+            HRouter.getInstance().withRouter("/app/main").go(LoginActivity.this);
         });
         btnJump2User.setOnClickListener(view -> {
-            HRouter.getInstance().with("/app/user").go(LoginActivity.this);
+            HRouter.getInstance().withRouter("/app/user").go(LoginActivity.this);
         });
 
 
