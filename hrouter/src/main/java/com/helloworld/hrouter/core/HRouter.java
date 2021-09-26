@@ -78,5 +78,7 @@ public class HRouter {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         tmpContext.startActivity(intent);
+
+//        overridePendingTransition(fax.getEnterAnim(),fax.getExitAnim());
     }
 }

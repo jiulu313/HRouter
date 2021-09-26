@@ -46,6 +46,14 @@ public class Fax {
         return mBundle;
     }
 
+    public int getEnterAnim() {
+        return enterAnim;
+    }
+
+    public int getExitAnim() {
+        return exitAnim;
+    }
+
     // Follow api copy from #{Bundle}
     public Fax withString(@Nullable String key, @Nullable String value) {
         mBundle.putString(key, value);

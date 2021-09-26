@@ -1,4 +1,4 @@
-package com.helloworld.hrouter;
+package com.helloworld.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             onLogin();
         });
-
-
     }
 
     private void onLogin() {

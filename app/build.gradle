@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.helloworld.hrouter"
+        applicationId "com.helloworld.app"
         minSdk 21
         targetSdk 30
         versionCode 1
