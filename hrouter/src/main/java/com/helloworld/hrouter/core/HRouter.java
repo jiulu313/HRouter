@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.helloworld.hrouter.util.ClassUtil;
@@ -12,7 +14,6 @@ import com.helloworld.hrouter.util.Consts;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.RecursiveTask;
 
 public class HRouter {
     private static boolean sDebuggable = false;
@@ -23,9 +24,11 @@ public class HRouter {
     private Map<String,Class<? extends Activity>> activityMap = new HashMap<>();
     private Context mContext;
     private boolean hasInit;
+    private Handler mainHandler;
 
-
-    private HRouter(){ }
+    private HRouter(){
+        mainHandler = new Handler(Looper.getMainLooper());
+    }
 
     public static HRouter getInstance() {
         return sRouter;
@@ -70,6 +73,14 @@ public class HRouter {
     }
 
     protected void go(Context context,Fax fax){
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            mainHandler.post(() -> startActivity(context,fax));
+        }else {
+            startActivity(context,fax);
+        }
+    }
+
+    private void startActivity(Context context,Fax fax){
         Context curContext = context == null ? mContext : context;
         Intent intent = new Intent(curContext, activityMap.get(fax.getPath()));
         intent.putExtras(fax.getBundle());
@@ -77,9 +88,14 @@ public class HRouter {
         if (context == null) { //说明tmpContext 是 application
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
+
         curContext.startActivity(intent);
+
+        //转场动画
         if (curContext instanceof Activity) {
-            ((Activity)curContext).overridePendingTransition(fax.getEnterAnim(),fax.getExitAnim());
+            if (fax.getEnterAnim() != -1 && fax.getExitAnim() != -1) {
+                ((Activity)curContext).overridePendingTransition(fax.getEnterAnim(),fax.getExitAnim());
+            }
         }
     }
 }
