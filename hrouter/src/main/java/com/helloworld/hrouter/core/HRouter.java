@@ -120,13 +120,17 @@ public class HRouter {
             return;
         }
 
+        boolean isProcessed = false;
         for (IIntercept intercept : intercepts) {
-            if (!intercept.process(fax)) {
+            isProcessed = intercept.process(fax);
+            if (!isProcessed) {
                 break;
             }
         }
 
-        realGo(context,fax);
+        if (!isProcessed) {
+            realGo(context,fax);
+        }
     }
 
     protected void realGo(Context context,Fax fax){
