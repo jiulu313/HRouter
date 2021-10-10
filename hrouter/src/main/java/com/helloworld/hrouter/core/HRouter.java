@@ -11,23 +11,32 @@ import android.text.TextUtils;
 import com.helloworld.hrouter.util.ClassUtil;
 import com.helloworld.hrouter.util.Consts;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class HRouter {
     private static boolean sDebuggable = false;
-
     private static HRouter sRouter = new HRouter();
 
+    private List<String> interceptNames;
+    private List<IIntercept> intercepts;
+    private Map<String,Class<? extends Activity>> activityMap;
 
-    private Map<String,Class<? extends Activity>> activityMap = new HashMap<>();
     private Context mContext;
     private boolean hasInit;
     private Handler mainHandler;
 
     private HRouter(){
         mainHandler = new Handler(Looper.getMainLooper());
+        activityMap = new HashMap<>();
+
+        interceptNames = new ArrayList<>();
+        intercepts = new ArrayList<>();
     }
 
     public static HRouter getInstance() {
@@ -43,12 +52,21 @@ public class HRouter {
             hasInit = true;
             mContext = application;
             try {
-                //获取包名下所有的类
-                Set<String> routerMap = ClassUtil.getFileNameByPackageName(mContext, Consts.ROUTE_ROOT_PAKCAGE);
+                //获取包名下所有util的类
+                Set<String> routerMap = ClassUtil.getFileNameByPackageName(mContext, Consts.HROUTER_UTIL_PAKCAGE);
                 for (String className : routerMap) {
-                    if (className != null && className.startsWith(Consts.ROUTE_ROOT_PAKCAGE)) {
+                    if (className != null && className.startsWith(Consts.HROUTER_UTIL_PAKCAGE)) {
                         IRouter router = (IRouter) (Class.forName(className).getConstructor().newInstance());
                         router.addActivity();
+                    }
+                }
+
+                //获取包名下所有的intercept的类
+                Set<String> interceptMap = ClassUtil.getFileNameByPackageName(mContext,Consts.HROUTER_INTERCEPT_PAKCAGE);
+                for (String className : interceptMap) {
+                    if (className != null && className.startsWith(Consts.HROUTER_INTERCEPT_PAKCAGE)) {
+                        IAddIntercept intercept = (IAddIntercept) (Class.forName(className).getConstructor().newInstance());
+                        intercept.addIntercept();
                     }
                 }
             } catch (Exception e) {
@@ -64,6 +82,30 @@ public class HRouter {
         activityMap.put(path,clazz);
     }
 
+    public void addIntercept(String fullName){
+        if (fullName == null || fullName.length() == 0) {
+            return;
+        }
+
+        if (!interceptNames.contains(fullName)) {
+            interceptNames.add(fullName);
+            try {
+                IIntercept intercept = (IIntercept) Class.forName(fullName).getConstructor().newInstance();
+                intercepts.add(intercept);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public Fax withRouter(String path){
         if (com.helloworld.hrouter.util.TextUtils.isEmpty(path)) {
             throw new IllegalArgumentException("path must not be null or empty");
@@ -73,6 +115,21 @@ public class HRouter {
     }
 
     protected void go(Context context,Fax fax){
+        if (intercepts.isEmpty()) {
+            realGo(context,fax);
+            return;
+        }
+
+        for (IIntercept intercept : intercepts) {
+            if (!intercept.process(fax)) {
+                break;
+            }
+        }
+
+        realGo(context,fax);
+    }
+
+    protected void realGo(Context context,Fax fax){
         if (Looper.getMainLooper() != Looper.myLooper()) {
             mainHandler.post(() -> startActivity(context,fax));
         }else {

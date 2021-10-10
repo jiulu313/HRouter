@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.helloworld.hrouter.annotation.Intercept;
 import com.helloworld.hrouter.annotation.Router;
 import com.helloworld.hrouter.core.HRouter;
+
 
 @Router("/app/main")
 public class MainActivity extends AppCompatActivity {

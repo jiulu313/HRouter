@@ -9,7 +9,10 @@ public final class Consts {
     public static final String SUFFIX_PROVIDERS = "Providers";
     public static final String SUFFIX_AUTOWIRED = SEPARATOR + SDK_NAME + SEPARATOR + "Autowired";
     public static final String DOT = ".";
-    public static final String ROUTE_ROOT_PAKCAGE = "com.helloworld.util";
+
+    public static final String HROUTER_UTIL_PAKCAGE = "com.helloworld.hrouter.util";
+    public static final String HROUTER_INTERCEPT_PAKCAGE = "com.helloworld.hrouter.intercept";
+
 
 
     public static final String AROUTER_SP_CACHE_KEY = "SP_AROUTER_CACHE";

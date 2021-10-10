@@ -2,6 +2,7 @@ package com.helloworld.app;
 
 import android.app.Application;
 
+import com.helloworld.hrouter.annotation.Intercept;
 import com.helloworld.hrouter.core.HRouter;
 
 public class MyApplication extends Application {
