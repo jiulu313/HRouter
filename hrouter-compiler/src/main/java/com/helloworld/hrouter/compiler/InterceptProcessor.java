@@ -31,7 +31,7 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 public class InterceptProcessor extends AbstractProcessor {
     private static final String CORE_PACKAGE_NAME = "com.helloworld.hrouter.core";
-    private static final String GENERATE_CODE_PACKAGE_NAME = "com.helloworld.hrouter.intercept";
+    private static final String GENERATE_CODE_PACKAGE_NAME = "com.helloworld.hrouter.internal.intercept";
 
     private Filer filer;
 

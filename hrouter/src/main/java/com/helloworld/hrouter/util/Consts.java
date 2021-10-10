@@ -10,8 +10,8 @@ public final class Consts {
     public static final String SUFFIX_AUTOWIRED = SEPARATOR + SDK_NAME + SEPARATOR + "Autowired";
     public static final String DOT = ".";
 
-    public static final String HROUTER_UTIL_PAKCAGE = "com.helloworld.hrouter.util";
-    public static final String HROUTER_INTERCEPT_PAKCAGE = "com.helloworld.hrouter.intercept";
+    public static final String HROUTER_UTIL_PAKCAGE = "com.helloworld.hrouter.internal.util";
+    public static final String HROUTER_INTERCEPT_PAKCAGE = "com.helloworld.hrouter.internal.intercept";
 
 
 

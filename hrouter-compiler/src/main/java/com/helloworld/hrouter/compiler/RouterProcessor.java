@@ -28,7 +28,7 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 public class RouterProcessor extends AbstractProcessor {
     private static final String CORE_ROUTER_PACKAGE_NAME = "com.helloworld.hrouter.core";
-    private static final String GENERATE_CODE_PACKAGE_NAME = "com.helloworld.hrouter.util";
+    private static final String GENERATE_CODE_PACKAGE_NAME = "com.helloworld.hrouter.internal.util";
 
     private Filer filer;
 
